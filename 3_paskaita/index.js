@@ -2,7 +2,9 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const db = require('./db');
 
+const users = db.data;
 const app = express();
 const port = process.env.PORT || 8080;
 
@@ -13,6 +15,10 @@ const port = process.env.PORT || 8080;
 
 app.use(cors());
 app.use(express.json()); // is JSON i JS
+
+app.get('/users', (req, res) => {
+  res.send(users);
+});
 
 const cars = [
   {

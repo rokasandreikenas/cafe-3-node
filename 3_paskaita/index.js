@@ -1,8 +1,15 @@
 // npm init - sukuria package.json faila
-const express = require("express");
-const cors = require("cors");
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 8080;
+
+// Jeigu neimportavo env failo
+// 1. patikrinti kintamuju pavadinimus
+// 2. modulio importavima ir config paleidima
+// 3. .env failas turi buti root folderyje prie package.json
 
 app.use(cors());
 app.use(express.json()); // is JSON i JS
@@ -10,38 +17,38 @@ app.use(express.json()); // is JSON i JS
 const cars = [
   {
     id: 1,
-    make: "BMW",
-    model: "530",
-    color: "Black",
+    make: 'BMW',
+    model: '530',
+    color: 'Black',
   },
   {
     id: 2,
-    make: "Audi",
-    model: "A6",
-    color: "White",
+    make: 'Audi',
+    model: 'A6',
+    color: 'White',
   },
 ];
 
-app.get("/cars", (req, res) => {
+app.get('/cars', (req, res) => {
   res.send(cars);
 });
 
-app.get("/cars/:id", (req, res) => {
+app.get('/cars/:id', (req, res) => {
   const id = +req.params.id;
-  const car = cars.find((car) => car.id === id);
+  const car = cars.find((c) => c.id === id);
 
   if (car) {
     res.send(car);
   } else {
     res.status(404).send({
-      error: "Car not found",
+      error: 'Car not found',
     });
   }
 });
 
 // atsiuncia {make, model, color}
 // gauna {id, make, model, color}
-app.post("/cars", (req, res) => {
+app.post('/cars', (req, res) => {
   const car = req.body;
   if (car.make && car.model && car.color) {
     const newCar = { ...car, id: Date.now() };
@@ -49,7 +56,7 @@ app.post("/cars", (req, res) => {
     res.send(newCar);
   } else {
     res.status(400).send({
-      error: "Invalid request",
+      error: 'Invalid request',
     });
   }
 });
